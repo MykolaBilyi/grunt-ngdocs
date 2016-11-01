@@ -1384,8 +1384,8 @@ function explainModuleInstallation(moduleName){
   return '<h1>Installation</h1>' +
     '<p>Put <code>' + moduleName +'</code> as dependency for your require.js module</p>' +
     '<p>Then load the module in your angular module by adding it as a dependent module:</p><pre><code>' +
-    '    define([\'' + moduleName + '\'], function() {' + 
-    '        angular.module(\'app\/module\', [\'' + moduleName + '\']);' +
+    '    define([\'' + moduleName + '\'], function() {\n' + 
+    '        angular.module(\'app\/module\', [\'' + moduleName + '\']);\n' +
     '    })</code></pre>' +
 
     '<p>With that you\'re ready to get started!</p>';

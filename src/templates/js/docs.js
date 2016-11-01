@@ -288,7 +288,7 @@ docsApp.controller.DocsController = function($scope, $location, $window, section
   $scope.$watch(function docsPathWatch() {return $location.path(); }, function docsPathWatchAction(path) {
     var parts = path.split('/'),
       sectionId = parts[1],
-      partialId = parts[2],
+      partialId = parts.splice(2).join('/'),
       page, sectionName = $scope.sections[(NG_DOCS.html5Mode ? '' : '#/') + sectionId];
 
     if (!sectionName) { return; }

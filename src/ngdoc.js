@@ -167,7 +167,7 @@ Doc.prototype = {
     }
 
     if (url.substr(-1) == '/') return prefix + url + 'index';
-    if (url.match(/\//) && (url.split(/\//).shift() !== this.id.split(/\//).shift())) return prefix + url;
+    if (url.match(/\//) && (this.ngdoc !== 'overview' || url.split(/\//).shift() !== this.id.split(/\//).shift())) return prefix + url;
     return prefix + this.section + '/' + url;
   },
 
@@ -519,7 +519,7 @@ Doc.prototype = {
           'error-display': minerrMsg.replace(/"/g, '&quot;')
         }, minerrMsg);
       }
-      if (self.ngdoc != 'overview' && self.ngdoc != 'module') {
+      if (self.ngdoc != 'overview') {
         dom.h('Description', self.description, dom.html);
       }
       dom.h('Dependencies', self.requires, function(require){
@@ -535,14 +535,11 @@ Doc.prototype = {
             if (splitName.length > 0) {
               name = splitName.join(' ');
             } else {
-              name = id.split(/[\.:\/]/).pop();
+              name = id.split(/[\.:]/).pop();
             }
-          } else if (self.ngdoc === 'module') {
-            id = require.name;
-            name = require.name;
           } else {
             id = require.name[0] == '$' ? 'ng.' + require.name : require.name
-            name = require.name.split(/[\.:\/]/).pop();
+            name = require.name.split(/[\.:]/).pop();
           }
           dom.tag('a', {href: self.convertUrlToAbsolute(id)}, name);
         });
@@ -880,10 +877,6 @@ Doc.prototype = {
   },
 
   html_usage_overview: function(dom){
-    dom.html(this.description);
-  },
-
-  html_usage_module: function(dom){
     dom.html(this.description);
   },
 

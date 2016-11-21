@@ -1382,10 +1382,9 @@ function dashCase(name){
 
 function explainModuleInstallation(moduleName){
   return '<h1>Installation</h1>' +
-    '<p>Put <code>' + moduleName +'</code> as dependency for your require.js module</p>' +
-    '<p>Then load the module in your angular module by adding it as a dependent module:</p><pre><code>' +
-    '    define([\'' + moduleName + '\'], function() {\n' + 
-    '        angular.module(\'app\/module\', [\'' + moduleName + '\']);\n' +
+    '<p>Inject module <code>' + moduleName +'</code> with <code>angular-require</code> as dependency for your require.js module:</p><pre><code>' +
+    '    define([\'ng!' + moduleName + '\'], function() {\n' + 
+    '        angular.module(\'app\/module\', []);\n' +
     '    })</code></pre>' +
 
     '<p>With that you\'re ready to get started!</p>';

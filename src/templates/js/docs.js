@@ -237,7 +237,7 @@ docsApp.controller.DocsController = function($scope, $location, $window, section
       MODULE_FILTER = /^(.+)\.filters?:([^\.]+)$/,
       MODULE_CUSTOM = /^(.+)\.([^\.]+):([^\.]+)$/,
       MODULE_SERVICE = /^(.+)\.([^\.]+?)(Provider)?$/,
-      MODULE_TYPE = /^([^\.]+)\..+\.([A-Z][^\.]+)$/;
+      MODULE_TYPE = /^([^\.]+)\.(.+\.[A-Z][^\.]+)$/;
 
 
   /**********************************
@@ -428,7 +428,8 @@ docsApp.controller.DocsController = function($scope, $location, $window, section
             m.others.push(page);
           }
         }
-      } else if (match = id.match(MODULE_TYPE) && page.type === 'type') {
+      } else if ((match = id.match(MODULE_TYPE)) && page.type === 'type') {
+        page.name = match[2];
         module(page.moduleName || match[1], section).types.push(page);
       } else if (match = id.match(MODULE_SERVICE)) {
         if (page.type === 'overview') {

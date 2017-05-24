@@ -410,8 +410,8 @@ Doc.prototype = {
             self.moduleName = match[1];
           }
         } else if (atName == 'param') {
-          match = text.match(/^\{([^}]+)\}\s+(([^\s=]+)|\[(\S+)=([^\]]+)\])\s+(.*)/);
-                             //  1      1    23       3   4   4 5      5  2   6  6
+          match = text.match(/^\{([^}]+)\}\s+(([^\s=]+)|\[(\S+)=([^\]]+)\])(\s+(.*))?/);
+                             //  1      1    23       3   4   4 5      5  26   7  76
           if (!match) {
             throw new Error("Not a valid 'param' format: " + text + ' (found in: ' + self.file + ':' + self.line + ')');
           }
@@ -419,7 +419,7 @@ Doc.prototype = {
           var optional = (match[1].slice(-1) === '=');
           var param = {
             name: match[4] || match[3],
-            description:self.markdown(text.replace(match[0], match[6])),
+            description:self.markdown(text.replace(match[0], match[7] || "")),
             type: optional ? match[1].substring(0, match[1].length-1) : match[1],
             optional: optional,
             default: match[5]
@@ -441,13 +441,13 @@ Doc.prototype = {
             self.param.push(param);
           }
         } else if (atName == 'returns' || atName == 'return') {
-          match = text.match(/^\{([^}]+)\}\s+(.*)/);
+          match = text.match(/^\{([^}]+)\}(\s+(.*))?/);
           if (!match) {
             throw new Error("Not a valid 'returns' format: " + text + ' (found in: ' + self.file + ':' + self.line + ')');
           }
           self.returns = {
             type: match[1],
-            description: self.markdown(text.replace(match[0], match[2]))
+            description: self.markdown(text.replace(match[0], match[3] || ""))
           };
         } else if(atName == 'requires') {
           if (/^((({@link).+})|(\[.+\]({@link).+}))$/.test(text)) {

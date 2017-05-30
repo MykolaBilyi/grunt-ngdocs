@@ -410,8 +410,8 @@ Doc.prototype = {
             self.moduleName = match[1];
           }
         } else if (atName == 'param') {
-          match = text.match(/^\{([^}]+)\}\s+(([^\s=]+)|\[(\S+)=([^\]]+)\])(\s+(.*))?/);
-                             //  1      1    23       3   4   4 5      5  26   7  76
+          match = text.match(/^\{([^}]+)\}\s+(([^\[\]\s=]+)|\[([^\s=]+)(=[^\]]+)?\])(\s+.*)?/);
+                             //  1      1    23           3   4       45       5   26     6
           if (!match) {
             throw new Error("Not a valid 'param' format: " + text + ' (found in: ' + self.file + ':' + self.line + ')');
           }
@@ -419,10 +419,10 @@ Doc.prototype = {
           var optional = (match[1].slice(-1) === '=');
           var param = {
             name: match[4] || match[3],
-            description:self.markdown(text.replace(match[0], match[7] || "")),
+            description:self.markdown(text.replace(match[0], match[6] || "")),
             type: optional ? match[1].substring(0, match[1].length-1) : match[1],
             optional: optional,
-            default: match[5]
+            default: match[5]?match[5].substring(1):match[5]
           };
           // if param name is a part of an object passed to a method
           // move it to a nested property of the parameter.
